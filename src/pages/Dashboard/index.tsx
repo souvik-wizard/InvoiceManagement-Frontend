@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
 import { updateDataField } from "../../store/slices/dataSlice";
 import { useNavigate } from "react-router-dom";
+import { FaExclamationCircle } from "react-icons/fa"; // Icon for missing fields
 
 const DashboardTabs: React.FC = () => {
   const navigate = useNavigate();
@@ -54,47 +55,81 @@ const DashboardTabs: React.FC = () => {
       );
     }
 
+    // Check if any fields are missing
+    const missingFields = dataFromStore.some((item) =>
+      columns.some(
+        (key) =>
+          item[key] === null || item[key] === undefined || item[key] === "N/A"
+      )
+    );
+
     return (
-      <table className="table-auto w-full border-collapse border border-gray-300">
-        <thead className="bg-gray-100">
-          <tr>
-            {columns.map((key) => (
-              <th key={key} className="border border-gray-300 px-4 py-2">
-                {key}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {dataFromStore.map((item: any, index: number) => (
-            <tr key={index}>
+      <div>
+        {missingFields && (
+          <div className="mb-4  text-red-500 flex items-center space-x-2">
+            <FaExclamationCircle className="text-red-500" />
+            <span>
+              Some fields are missing. Please fill all highlighted fields below.
+            </span>
+          </div>
+        )}
+
+        <table className="table-auto w-full border-collapse border border-gray-300">
+          <thead className="bg-gray-100">
+            <tr>
               {columns.map((key) => (
-                <td key={key} className="border border-gray-300 px-4 py-2">
-                  <input
-                    type={typeof item[key] === "number" ? "number" : "text"}
-                    value={
-                      typeof item[key] === "number"
-                        ? item[key]
-                        : item[key] || "N/A"
-                    }
-                    onChange={(e) => handleInputChange(e, index, key)}
-                    className="border px-2 py-1 w-full"
-                  />
-                </td>
+                <th key={key} className="border border-gray-300 px-4 py-2">
+                  {key}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {dataFromStore.map((item: any, index: number) => (
+              <tr key={index}>
+                {columns.map((key) => {
+                  const isMissingValue =
+                    item[key] === null ||
+                    item[key] === undefined ||
+                    item[key] === "N/A";
+                  return (
+                    <td
+                      key={key}
+                      className="relative border border-gray-300 px-4 py-2"
+                    >
+                      <input
+                        type={typeof item[key] === "number" ? "number" : "text"}
+                        value={
+                          item[key] === null ||
+                          item[key] === undefined ||
+                          item[key] === "N/A"
+                            ? ""
+                            : item[key]
+                        }
+                        onChange={(e) => handleInputChange(e, index, key)}
+                        className={`border px-2 py-1 w-full ${
+                          isMissingValue
+                            ? "bg-yellow-100 border-yellow-500"
+                            : ""
+                        }`}
+                      />
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   };
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <div className="mb-8 border-b flex  justify-between">
-        <ul className="flex ">
+      <div className="mb-8 border-b flex justify-between">
+        <ul className="flex space-x-6">
           {["Invoices", "Products", "Customers"].map((tab) => (
-            <li key={tab} className="mr-6">
+            <li key={tab}>
               <button
                 className={`inline-block py-2 px-4 font-semibold ${
                   activeTab === tab
