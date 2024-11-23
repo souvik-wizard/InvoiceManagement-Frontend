@@ -64,9 +64,8 @@ const FileUpload: React.FC = () => {
 
       const data = await response.json();
       setSuccessMessage("Files uploaded successfully!");
-      const parsedData = JSON.parse(data.data);
+      const parsedData = data.data;
       console.log(parsedData, "parsedData");
-
       dispatch(setData(parsedData));
 
       navigate("/table");
