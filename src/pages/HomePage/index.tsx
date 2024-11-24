@@ -17,7 +17,7 @@ const FileUpload: React.FC = () => {
     "image/png", // PNG
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // Excel
   ];
-  const maxFileSize = 5 * 1024 * 1024; // 5MB
+  const maxFileSize = 5 * 1024 * 1024; // 5MB MAX
 
   const handleFileUpload = (files: FileList | null) => {
     if (!files) return;
