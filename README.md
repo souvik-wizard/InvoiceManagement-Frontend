@@ -4,9 +4,9 @@
 
 - Upload: Users upload an Excel file in .xlsx format.
 - Parsing with ExcelJS:
-The file is read and parsed using the ExcelJS library.
+The file is read and parsed using the ExcelJS library. <br>
 Each row of the first worksheet is extracted into an array of objects, with rows containing column names and their corresponding values.
-If the file contains more than 40 rows, the system processes it in batches of 40 rows to prevent memory issues(as the free ai model has its limits) or crashes.
+If the file contains more than 40(defined in code) rows, the system processes it in batches of 40 rows to prevent memory issues(as the free ai model has its limits) or crashes.
 - Data Preparation:
 The extracted data is formatted into JSON.
 For each batch, a custom prompt is created to send to the Google Generative AI model.
