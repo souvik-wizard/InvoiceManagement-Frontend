@@ -1,3 +1,13 @@
+# Installation
+- First install all packages
+```
+npm i
+```
+- then start the server
+```
+npm run dev
+```
+
 # AI Data Extraction (How It Works)
 
 ## Excel File Handling
